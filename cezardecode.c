@@ -1,10 +1,8 @@
-//(str[i] - 'a' + key) % 26 + 'a'
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #define MAXN 1000
 FILE *fptr;
-
 
 char* cezar_cipher(char* str, int key)
 {
@@ -12,9 +10,25 @@ char* cezar_cipher(char* str, int key)
     char* cipher = (char*) malloc(sizeof(char) * (length + 1));
     for(int i = 0; i < length; i++)
     {
-        cipher[i] = (str[i] - 'a' + key) % 26 + 'a';
+        if(str[i] >= 'a' && str[i] <= 'z')
+        {
+            cipher[i] = (str[i] - 'a' + key) % 26 + 'a';
+        }
+        else if(str[i] >= 'A' && str[i] <= 'Z')
+        {
+            cipher[i] = (str[i] - 'A' + key) % 26 + 'A';
+        }
+        else if(str[i] >= '0' && str[i] <= '9')
+        {
+            cipher[i] = (str[i] - '0' + key) % 10 + '0';
+        }
+        else
+        {
+            cipher[i] = str[i];
+        }
     }
     cipher[length] = '\0';
+
     return cipher;
 }
 
@@ -117,17 +131,18 @@ int main()
     if(strcmp(choice, "N") == 0){
         
         char str2[MAXN];
-
+        int key;
+        
         printf("Enter the word you want to encrypt: ");
         scanf("%s", str2);
-        int key;
         printf("Enter the key you want to use: ");
         scanf("%d", &key);
         char* cipher = cezar_cipher(str2, key);
         printf("%s", cipher);
+        printf("\n");
 
     }
-        printf("Do you want to continue? (END/Yes)");
+        printf("Do you want to continue? (Yes/END) ");
         scanf("%s", final);
         
     }
