@@ -8,9 +8,9 @@ bool* eratosten (int x)
 
     bool* seive = (bool*) malloc(sizeof (bool) * (x + 1));
     memset (seive, false, sizeof(bool) * (x + 1));
-    for (int i = 2; i <= x; i++){
+    for (int i = 2; i <= x / 2; i++){
         if (!seive[i]){
-            for (int j = i + i; j <= x; j += i){
+            for (int j = i * i; j <= x; j += i){
                 seive[j] = true;
             }
         }  
