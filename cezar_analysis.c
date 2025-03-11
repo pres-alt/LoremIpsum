@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <math.h>
 #define MAXN 1000
 #define ALPHA_LENGTH 26
-
-//Make it read from a file
+#define common_letters 10
 
 char* cezar_decipher(char* cipher, int key)
 {
@@ -51,26 +52,55 @@ int read_cipher(char* filename, char* cipher)
     return EXIT_SUCCESS;
 }
 
-void write_text(char* filename, char* text)
-{
-    FILE *fp = fopen(filename, "wb");
-    fprintf(fp, "%s", text);
-    fclose(fp);
+int* count_frequencies(char* cipher){
+
+    int* frequencies = (int*) malloc(sizeof(int)* ALPHA_LENGTH);
+    memset(frequencies, 0, sizeof(int)* ALPHA_LENGTH);
+    int length = strlen(cipher);
+    for (int i = 0; i < length; i++){
+        char symbol = tolower(cipher[i]);
+        if (symbol >= 'a' && symbol <= 'z'){
+            int position = symbol - 'a';
+            frequencies[position]++;
+        }
+    }
+    return frequencies;
+
+}
+
+int get_max_index(int* frequencies){
+    int max_index = 0;
+    for (int i = 0; i < ALPHA_LENGTH; i++){
+        if(frequencies[i] > frequencies[max_index]){
+            max_index = i;
+        }
+    }
+    return max_index;
 }
 
 
 int main(){
 
-    printf("Enter the word you want to get decrypted");
-    char cipher[MAXN];
-    scanf("%s", cipher);
+char cipher[MAXN];
+read_cipher("cezar.txt", cipher);
+int* frequencies = count_frequencies(cipher);
+char letter = get_max_index(frequencies) + 'a';
+char commons[common_letters] = {'e','t','a','o','i','n','s','r','h','l'};
 
-    
-
-for (int key = 0; key < ALPHA_LENGTH; key++){
-    char* text = cezar_decipher(cipher, key);
-    printf("Key = %d, cipher -> %s \n", key, text);
+for(int i = 0; i< common_letters; i++){
+    int key = abs(letter - commons[i]);
+    char* text = cezar_decipher(cipher,key);
+    printf("Key %d -> %s\n", key, text);
     free(text);
+
 }
 return EXIT_SUCCESS;
+
+
+
+
+
+
+
+
 }
