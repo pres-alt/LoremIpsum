@@ -109,7 +109,7 @@ int main()
     if(read_cipher(filename, cipher) == EXIT_SUCCESS)
     {
 
-        printf("Key = 3");
+        printf("Key = 3\n");
         int key = 3;
     
         char* text = cezar_decipher(cipher, key);
