@@ -20,7 +20,7 @@ int main(){
     bp_private = BIO_new_file("private.pem", "w+");
     result = PEM_write_bio_RSAPrivateKey(bp_private, r, NULL, NULL, 0, NULL, NULL);
 
-    printf("Done");
+    printf("Done\n");
     return EXIT_SUCCESS;
     
 }
